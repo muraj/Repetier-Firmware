@@ -1012,4 +1012,9 @@ extern int debugWaitLoop;
 #include "CustomEvents.h"
 #endif
 
+#if Z_PROBE_ACCELEROMETER
+extern bool accelerometer_init();
+extern bool accelerometer_clicked();
+#endif // Z_PROBE_ACCELEROMETER
+
 #endif

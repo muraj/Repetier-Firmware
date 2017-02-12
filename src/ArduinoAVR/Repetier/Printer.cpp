@@ -213,7 +213,10 @@ void Endstops::update() {
             newRead |= ENDSTOP_Z2_MINMAX_ID;
 #endif
 #if FEATURE_Z_PROBE
-#if Z_PROBE_PIN == Z_MIN_PIN && MIN_HARDWARE_ENDSTOP_Z
+#if Z_PROBE_ACCELEROMETER
+  if (accelerometer_clicked())
+        newRead |= ENDSTOP_Z_PROBE_ID;
+#elif Z_PROBE_PIN == Z_MIN_PIN && MIN_HARDWARE_ENDSTOP_Z
 	if(newRead & ENDSTOP_Z_MIN_ID) // prevent different results causing confusion
         newRead |= ENDSTOP_Z_PROBE_ID;
 #else
@@ -773,6 +776,9 @@ void Printer::setup()
     HAL::spiBegin();
 #endif
     HAL::hwSetup();
+#if Z_PROBE_ACCELEROMETER
+    accelerometer_init();
+#endif
 #ifdef ANALYZER
 // Channel->pin assignments
 #if ANALYZER_CH0>=0
